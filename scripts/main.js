@@ -2,6 +2,8 @@
 
 import SocketService from './socket.service.js';
 import InputBar from './input-bar.js';
+import MessageBox from './message-box.js';
+import ChatMessage from './chat-message.js';
 
 class SocketIoChatApp {
   constructor() {
@@ -26,3 +28,5 @@ class SocketIoChatApp {
 window.addEventListener('load', () => new SocketIoChatApp());
 
 customElements.define('chat-input-bar', InputBar);
+customElements.define('message-box', MessageBox);
+customElements.define('chat-message', ChatMessage);

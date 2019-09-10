@@ -1,0 +1,6 @@
+.wrapper {
+  border: 1px solid #d6d6d6;
+  overflow-y: auto;
+  height: calc(100% - 40px);
+  width: 100%;
+}
