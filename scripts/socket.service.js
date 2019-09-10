@@ -1,13 +1,15 @@
 'use strict';
 
+import EventObserver from './event.observer.js';
+
 let instance = null;
 
 class SocketService {
   constructor() {
     if (!instance) {
       this._isConnected = false;
-      this.statusObservers = [];
-      this.messageObservers = [];
+      this.statusObserver = new EventObserver();
+      this.messageObserver = new EventObserver();
       instance = this;
     }
 
@@ -22,16 +24,17 @@ class SocketService {
 
     this.socket.on('connect', () => {
       this._isConnected = this.socket.connected;
-      this.broadcastStatusChange(this._isConnected);
+      this.statusObserver.broadcast(this._isConnected);
     });
 
     this.socket.on('reconnect', (attemptNumber) => {
       this._isConnected = this.socket.connected;
-      this.broadcastStatusChange(this._isConnected);
+      this.statusObserver.broadcast(this._isConnected);
     });
 
     this.socket.on('disconnect', (reason) => {
       this._isConnected = this.socket.connected;
+      this.statusObserver.broadcast(this._isConnected);
 
       if (reason === 'io server disconnect') {
         // manually reconnect
@@ -40,7 +43,7 @@ class SocketService {
     });
 
     this.socket.on("message", (message) => {
-      this.broadcastMessage(message);
+      this.messageObserver.broadcast(message);
     });
   }
 
@@ -74,26 +77,14 @@ class SocketService {
    * @param fn callback function to add
    */
   subscribeToStatusChanges(fn) {
-    this.statusObservers.push(fn);
+    this.statusObserver.subscribe(fn);
   }
   /**
    * Unsubscibe from socket status changes.
    * @param fn callback function to delete
    */
   unsubscribeFromStatusChanges(fn) {
-    const idx = this.statusObservers.findIndex(f => f === fn);
-    if (idx > -1) {
-      this.statusObservers.splice(idx, 1);
-    }
-  }
-  /**
-   * Broadcast a data to all observers.
-   * @param data the data to broadcast 
-   */
-  broadcastStatusChange(data) {
-    for(let i = 0; i < this.statusObservers.length; i++) {
-      this.statusObservers[i](data);
-    }
+    this.statusObserver.unsubscribe(fn);
   }
 
   /**
@@ -101,26 +92,14 @@ class SocketService {
    * @param fn callback function to add
    */
   subscribeToMessage(fn) {
-    this.messageObservers.push(fn);
+    this.messageObserver.subscribe(fn);
   }
   /**
    * Unsubscibe from incoming messages.
    * @param fn callback function to delete
    */
   unsubscribeFromMessage(fn) {
-    const idx = this.messageObservers.findIndex(f => f === fn);
-    if (idx > -1) {
-      this.messageObservers.splice(idx, 1);
-    }
-  }
-  /**
-   * Broadcast a message to all observers.
-   * @param data the data to broadcast 
-   */
-  broadcastMessage(data) {
-    for(let i = 0; i < this.messageObservers.length; i++) {
-      this.messageObservers[i](data);
-    }
+    this.messageObserver.unsubscribe(fn);
   }
 
   /**
