@@ -1,0 +1,22 @@
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+  width: calc(100% - 32px);
+}
+
+input.nickname,
+button.send-button {
+  flex: 1 1 0;
+}
+
+input.nickname {
+  width: 50px;
+}
+
+input.message {
+  flex: 4 1 0;
+  margin-left: 16px;
+  margin-right: 16px;
+}

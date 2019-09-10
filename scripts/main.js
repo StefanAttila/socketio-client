@@ -1,6 +1,7 @@
 'use strict';
 
 import SocketService from './socket.service.js';
+import InputBar from './input-bar.js';
 
 class SocketIoChatApp {
   constructor() {
@@ -17,3 +18,5 @@ class SocketIoChatApp {
 
 // On load start the app.
 window.addEventListener('load', () => new SocketIoChatApp());
+
+customElements.define('chat-input-bar', InputBar);
