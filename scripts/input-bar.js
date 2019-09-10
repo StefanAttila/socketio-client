@@ -10,16 +10,40 @@ class InputBar extends HTMLElement {
     const shadowRoot = this.attachShadow({mode: 'open'});
     shadowRoot.innerHTML = InputBar.TEMPLATE;
 
-    const form = shadowRoot.getElementById('form');
-    form.addEventListener('submit', this.sendMessage.bind(this));
+    // get socket service instance
+    this.socketService = new SocketService();
 
+    // get form, inputs, buttons
+    const form = shadowRoot.getElementById('form');
     this.nickname = shadowRoot.getElementById('nickname');
     this.message = shadowRoot.getElementById('message');
     this.sendButton = shadowRoot.getElementById('send');
+    this.sendButton.disabled = true;
 
-    this.socketService = new SocketService();
+    // set eventlisteners
+    form.addEventListener('submit', this.sendMessage.bind(this));
+    this.message.addEventListener('input', this.onInputChanged.bind(this));
+
+    // subscribe to socket status events
+    this.socketService.subscribeToStatusChanges((connected) => {
+      if (connected && this.message.value) {
+        this.sendButton.disabled = false;
+      } else {
+        this.sendButton.disabled = true;
+      }
+    });
+
+    // set the nickname from localStorage
+    const savedNickname = localStorage.getItem("nickname");
+    if (savedNickname) {
+      this.nickname.value = savedNickname;
+    }
   }
 
+  /**
+   * Create and send message via socket service.
+   * @param event 
+   */
   sendMessage(event) {
     event.preventDefault();
 
@@ -37,11 +61,25 @@ class InputBar extends HTMLElement {
     this.sendButton.disabled = false;
   }
 
+  /**
+   * Returns a message object from input values.
+   */
   createMessage() {
     return {
       message: this.message.value,
       user: this.nickname.value || 'guest0001',
     };
+  }
+
+  /**
+   * Set the status of send button on input changes.
+   */
+  onInputChanged() {
+    if (this.message.value && this.sendButton.disabled) {
+      this.sendButton.disabled = false;
+    } else if (!this.message.value) {
+      this.sendButton.disabled = true;
+    }
   }
 }
 
