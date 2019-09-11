@@ -28,6 +28,13 @@ class InputBar extends HTMLElement {
     this.message.addEventListener('input', this.onMessageInputChanged.bind(this));
     this.dHandler = this.debounce(500, this.onNicknameInputChanged.bind(this));
     this.nickname.addEventListener('input', this.dHandler);
+    // handle online, offline events
+    window.addEventListener('online', () => {
+      this.disableEnableInputs(true);
+    });
+    window.addEventListener('offline', () => {
+      this.disableEnableInputs(false);
+    });
 
     // subscribe to socket status events
     this.socketService.subscribeToStatusChanges((connected) => {
@@ -73,7 +80,6 @@ class InputBar extends HTMLElement {
 
     // delete value of message input
     this.message.value = '';
-    this.sendButton.disabled = false;
   }
 
   /**
@@ -121,6 +127,16 @@ class InputBar extends HTMLElement {
         timerId = null;
       }, delay);
     }
+  }
+
+  /**
+   * Enables/disables all inputs and the button.
+   * @param enable enable inputs and button
+   */
+  disableEnableInputs(enable) {
+    this.message.disabled = !enable;
+    this.nickname.disabled = !enable;
+    this.sendButton.disabled = !enable;
   }
 }
 

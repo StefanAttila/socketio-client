@@ -6,3 +6,11 @@
   height: calc(100% - 56px);
   width: calc(100% - 16px);
 }
+
+.wrapper.not-connected {
+  text-align: center;
+  background: #d6d6d6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

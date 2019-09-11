@@ -15,11 +15,29 @@ class MessageBox extends HTMLElement {
 
     // get container
     this.container = shadowRoot.getElementById('message-container');
-
+    this.statusContainer = shadowRoot.getElementById('status-container');
+    // set container visibility
+    this.showHideContainer(false);
+    this.statusContainer.innerHTML = '<p>Socket is not connected</p>';
+    
     // get socket service instance
     this.socketService = new SocketService();
     this.socketService.subscribeToMessage((message) => {
       this.addMessage(message);
+    });
+    this.socketService.subscribeToStatusChanges((connected) => {
+      if (!connected) {
+        this.statusContainer.innerHTML = '<p>Socket is not connected!</p>';
+      }
+      this.showHideContainer(connected);
+    });
+
+    window.addEventListener('online', () => {
+      this.showHideContainer(true);
+    });
+    window.addEventListener('offline', () => {
+      this.showHideContainer(false);
+      this.statusContainer.innerHTML = '<p>No internet connection!</p>';
     });
   }
 
@@ -43,12 +61,26 @@ class MessageBox extends HTMLElement {
       }, 10);
     }
   }
+
+  /**
+   * Switches betwwe nthe message and the status container visibility.
+   * @param show to show the message container or not
+   */
+  showHideContainer(show) {
+    if (show) {
+      this.container.style.display = 'block';
+      this.statusContainer.style.display = 'none';
+    } else {
+      this.container.style.display = 'none';
+      this.statusContainer.style.display = 'flex';
+    }
+  }
 }
 
   MessageBox.TEMPLATE = `
   <link rel="stylesheet" href="../styles/message-box.css">
-  <div id="message-container" class="wrapper">
-  </div>
+  <div id="message-container" class="wrapper"></div>
+  <div id="status-container" class="wrapper not-connected"></div>
 `;
 
 export default MessageBox;
