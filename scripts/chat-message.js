@@ -1,5 +1,8 @@
 'use strict';
 
+/**
+ * The chat message custom element that represents one message.
+ */
 class ChatMessage extends HTMLElement {
   constructor() {
     super(); // always call super() first in the constructor.
@@ -32,7 +35,18 @@ class ChatMessage extends HTMLElement {
 }
 
   ChatMessage.TEMPLATE = `
-  <link rel="stylesheet" href="../styles/chat-message.css">
+  <style>
+    .wrapper {
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+    }
+    
+    .wrapper.sent {
+      justify-content: flex-end;
+    }
+  </style>
   <div id="message-wrapper" class="wrapper">
     <span id="sender"></span>
     <span id="message"></span>

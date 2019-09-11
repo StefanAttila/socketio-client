@@ -1,0 +1,12 @@
+.chat-wrapper {
+  height: 100%;
+  width: 100%;
+}
+
+@media screen and (min-width: 700px) {
+  .chat-wrapper {
+    margin-left: auto;
+    margin-right: auto;
+    width: 700px;
+  }
+}

@@ -2,11 +2,14 @@
   <head>
     <title>Socket.io client</title>
     <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon-16x16.png">
+    <link rel="stylesheet" href="../styles/style.css">
     <script src="./scripts/socket.io/socket.io.js"></script>
   </head>
   <body>
-    <message-box></message-box>
-    <chat-input-bar></chat-input-bar>
+    <div class="chat-wrapper">
+      <message-box></message-box>
+      <chat-input-bar></chat-input-bar>
+    </div>
 
     <script src="scripts/main.js" type="module"></script>
   </body>
