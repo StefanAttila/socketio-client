@@ -4,6 +4,9 @@ import EventObserver from './event.observer.js';
 
 let instance = null;
 
+/**
+ * Singleton class that manages socket.io status changes and events.
+ */
 class SocketService {
   constructor() {
     if (!instance) {

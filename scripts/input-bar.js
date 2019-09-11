@@ -2,6 +2,9 @@
 
 import SocketService from './socket.service.js';
 
+/**
+ * The bottom input bar custom element which handles the message sending, nickname changing.
+ */
 class InputBar extends HTMLElement {
   constructor() {
     super(); // always call super() first in the constructor.

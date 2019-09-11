@@ -1,5 +1,8 @@
 'use strict';
 
+/**
+ * The chat message custom element that represents one message.
+ */
 class ChatMessage extends HTMLElement {
   constructor() {
     super(); // always call super() first in the constructor.

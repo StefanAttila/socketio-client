@@ -1,5 +1,8 @@
 'use strict';
 
+/**
+ * Event observer class for communication using the observer pattern.
+ */
 class EventObserver {
   constructor() {
     this.observers = [];

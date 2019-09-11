@@ -2,6 +2,9 @@
 
 import SocketService from './socket.service.js';
 
+/**
+ * The message box custom element that contains the received chat messages.
+ */
 class MessageBox extends HTMLElement {
   constructor() {
     super(); // always call super() first in the constructor.
@@ -14,8 +17,8 @@ class MessageBox extends HTMLElement {
     this.container = shadowRoot.getElementById('message-container');
 
     // get socket service instance
-    const socketService = new SocketService();
-    socketService.subscribeToMessage((message) => {
+    this.socketService = new SocketService();
+    this.socketService.subscribeToMessage((message) => {
       this.addMessage(message);
     });
   }
