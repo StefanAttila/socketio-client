@@ -14,17 +14,17 @@ class InputBar extends HTMLElement {
     this.socketService = new SocketService();
 
     // get form, inputs, buttons
-    const form = shadowRoot.getElementById('form');
+    this.form = shadowRoot.getElementById('form');
     this.nickname = shadowRoot.getElementById('nickname');
     this.message = shadowRoot.getElementById('message');
     this.sendButton = shadowRoot.getElementById('send');
     this.sendButton.disabled = true;
 
     // set eventlisteners
-    form.addEventListener('submit', this.sendMessage.bind(this));
+    this.form.addEventListener('submit', this.sendMessage.bind(this));
     this.message.addEventListener('input', this.onMessageInputChanged.bind(this));
-    const dHandler = this.debounce(500, this.onNicknameInputChanged.bind(this));
-    this.nickname.addEventListener('input', dHandler);
+    this.dHandler = this.debounce(500, this.onNicknameInputChanged.bind(this));
+    this.nickname.addEventListener('input', this.dHandler);
 
     // subscribe to socket status events
     this.socketService.subscribeToStatusChanges((connected) => {
@@ -40,6 +40,16 @@ class InputBar extends HTMLElement {
     if (savedNickname) {
       this.nickname.value = savedNickname;
     }
+  }
+
+  /**
+   *  Invoked when the element is disconnected from the document's DOM.
+   */
+  disconnectedCallback() {
+    // remove eventlisteners
+    this.form.removeEventListener('submit', this.sendMessage.bind(this));
+    this.message.removeEventListener('input', this.onMessageInputChanged.bind(this));
+    this.nickname.removeEventListener('input', this.dHandler);
   }
 
   /**
