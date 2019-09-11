@@ -7,13 +7,31 @@ class ChatMessage extends HTMLElement {
     // Attach a shadow root to <chat-input-bar>.
     const shadowRoot = this.attachShadow({mode: 'open'});
     shadowRoot.innerHTML = ChatMessage.TEMPLATE;
+
+    // get wrapper, sender, and message
+    this.container = shadowRoot.getElementById('message-wrapper');
+    this.sender = shadowRoot.getElementById('sender');
+    this.message = shadowRoot.getElementById('message');
+  }
+
+  setMessage(message) {
+    const nickname = localStorage.getItem('nickname');
+    // if it's an own message style it as sent
+    if (nickname === message.user) {
+      this.container.classList.add('sent');
+    // else style it as received
+    } else {
+      this.sender.textContent = `${message.user}: `;
+    }
+    this.message.textContent = message.message;
   }
 }
 
   ChatMessage.TEMPLATE = `
   <link rel="stylesheet" href="../styles/chat-message.css">
-  <div class="wrapper">
-    This is a message
+  <div id="message-wrapper" class="wrapper">
+    <span id="sender"></span>
+    <span id="message"></span>
   </div>
 `;
 

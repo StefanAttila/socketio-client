@@ -11,16 +11,9 @@ class SocketIoChatApp {
     const socketService = new SocketService();
     socketService.init();
     // set default nickname in localStorage if not exists
-    if (!localStorage.getItem("nickname")) {
-      localStorage.setItem("nickname", "guest0001");
+    if (!localStorage.getItem('nickname')) {
+      localStorage.setItem('nickname', 'guest0001');
     }
-
-    socketService.subscribeToStatusChanges(connected => {
-      console.log('socket status change', connected);
-    });
-    socketService.subscribeToMessage(message => {
-      console.log('message received', message);
-    });
   }
 }
 

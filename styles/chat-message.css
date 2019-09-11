@@ -1,0 +1,10 @@
+.wrapper {
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.wrapper.sent {
+  justify-content: flex-end;
+}
