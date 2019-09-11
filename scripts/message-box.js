@@ -27,9 +27,17 @@ class MessageBox extends HTMLElement {
     });
     this.socketService.subscribeToStatusChanges((connected) => {
       if (!connected) {
-        this.statusContainer.innerHTML = '<p>Socket is not connected</p>';
+        this.statusContainer.innerHTML = '<p>Socket is not connected!</p>';
       }
       this.showHideContainer(connected);
+    });
+
+    window.addEventListener('online', () => {
+      this.showHideContainer(true);
+    });
+    window.addEventListener('offline', () => {
+      this.showHideContainer(false);
+      this.statusContainer.innerHTML = '<p>No internet connection!</p>';
     });
   }
 
