@@ -20,6 +20,10 @@ class MessageBox extends HTMLElement {
     });
   }
 
+  /**
+   * Appends a new <chat-message> to the container as child and scrolls to bottom.
+   * @param message the message to add
+   */
   addMessage(message) {
     if (!message) {
       return;
@@ -28,6 +32,13 @@ class MessageBox extends HTMLElement {
     const item = document.createElement('chat-message');
     item.setMessage(message);
     this.container.appendChild(item);
+    // scroll to bottom if needed
+    if (this.container.scrollHeight > this.container.offsetHeight) {
+      console.log('scroll needed');
+      setTimeout(() => {
+        this.container.scrollTo(0, this.container.scrollHeight);
+      }, 10);
+    }
   }
 }
 

@@ -14,6 +14,10 @@ class ChatMessage extends HTMLElement {
     this.message = shadowRoot.getElementById('message');
   }
 
+  /**
+   * Sets a message style.
+   * @param message the message object
+   */
   setMessage(message) {
     const nickname = localStorage.getItem('nickname');
     // if it's an own message style it as sent
@@ -21,7 +25,7 @@ class ChatMessage extends HTMLElement {
       this.container.classList.add('sent');
     // else style it as received
     } else {
-      this.sender.textContent = `${message.user}: `;
+      this.sender.innerHTML = `${message.user}:&nbsp;`;
     }
     this.message.textContent = message.message;
   }

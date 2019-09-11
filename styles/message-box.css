@@ -1,6 +1,7 @@
 .wrapper {
   border: 1px solid #d6d6d6;
   overflow-y: auto;
+  scroll-behavior: smooth;
   padding: 16px 8px 0;
   height: calc(100% - 56px);
   width: calc(100% - 16px);

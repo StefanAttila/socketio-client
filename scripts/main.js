@@ -17,9 +17,10 @@ class SocketIoChatApp {
   }
 }
 
-// On load start the app.
+// on load start the app.
 window.addEventListener('load', () => new SocketIoChatApp());
 
+// define custom elements
 customElements.define('chat-input-bar', InputBar);
 customElements.define('message-box', MessageBox);
 customElements.define('chat-message', ChatMessage);
