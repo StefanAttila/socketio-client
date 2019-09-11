@@ -22,7 +22,9 @@ class InputBar extends HTMLElement {
 
     // set eventlisteners
     form.addEventListener('submit', this.sendMessage.bind(this));
-    this.message.addEventListener('input', this.onInputChanged.bind(this));
+    this.message.addEventListener('input', this.onMessageInputChanged.bind(this));
+    const dHandler = this.debounce(500, this.onNicknameInputChanged.bind(this));
+    this.nickname.addEventListener('input', dHandler);
 
     // subscribe to socket status events
     this.socketService.subscribeToStatusChanges((connected) => {
@@ -34,7 +36,7 @@ class InputBar extends HTMLElement {
     });
 
     // set the nickname from localStorage
-    const savedNickname = localStorage.getItem("nickname");
+    const savedNickname = localStorage.getItem('nickname');
     if (savedNickname) {
       this.nickname.value = savedNickname;
     }
@@ -72,13 +74,39 @@ class InputBar extends HTMLElement {
   }
 
   /**
-   * Set the status of send button on input changes.
+   * Set the status of send button on message input changes.
    */
-  onInputChanged() {
+  onMessageInputChanged() {
     if (this.message.value && this.sendButton.disabled) {
       this.sendButton.disabled = false;
     } else if (!this.message.value) {
       this.sendButton.disabled = true;
+    }
+  }
+
+  /**
+   * Set nickname in localstorage.
+   */
+  onNicknameInputChanged() {
+    let name = this.nickname.value || 'guest0001';
+    localStorage.setItem('nickname', name);
+  }
+
+  /**
+   * Helps to run any function after a debounce time.
+   * @param delay the delay in ms
+   * @param fn function to call after delay
+   */
+  debounce(delay, fn) {
+    let timerId;
+    return function(...args) {
+      if (timerId) {
+        clearTimeout(timerId);
+      }
+      timerId = setTimeout(() => {
+        fn(...args);
+        timerId = null;
+      }, delay);
     }
   }
 }

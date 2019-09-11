@@ -2,6 +2,8 @@
 
 import SocketService from './socket.service.js';
 import InputBar from './input-bar.js';
+import MessageBox from './message-box.js';
+import ChatMessage from './chat-message.js';
 
 class SocketIoChatApp {
   constructor() {
@@ -9,20 +11,16 @@ class SocketIoChatApp {
     const socketService = new SocketService();
     socketService.init();
     // set default nickname in localStorage if not exists
-    if (!localStorage.getItem("nickname")) {
-      localStorage.setItem("nickname", "guest0001");
+    if (!localStorage.getItem('nickname')) {
+      localStorage.setItem('nickname', 'guest0001');
     }
-
-    socketService.subscribeToStatusChanges(connected => {
-      console.log('socket status change', connected);
-    });
-    socketService.subscribeToMessage(message => {
-      console.log('message received', message);
-    });
   }
 }
 
-// On load start the app.
+// on load start the app.
 window.addEventListener('load', () => new SocketIoChatApp());
 
+// define custom elements
 customElements.define('chat-input-bar', InputBar);
+customElements.define('message-box', MessageBox);
+customElements.define('chat-message', ChatMessage);
